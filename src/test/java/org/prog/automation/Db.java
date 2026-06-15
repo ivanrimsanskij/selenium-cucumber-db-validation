@@ -21,8 +21,8 @@ public class Db {
         List<String> codes = (List<String>) DataManager.DATA.get("iphone_codes");
         List<String> names = (List<String>) DataManager.DATA.get("iphone_names");
 
-        log.info("DEBUG: Names count: " + (names != null ? names.size() : "null"));
-        log.info("DEBUG: Codes count: " + (codes != null ? codes.size() : "null"));
+        log.info("Names count: " + (names != null ? names.size() : "null"));
+        log.info("Codes count: " + (codes != null ? codes.size() : "null"));
 
         PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO iphones (Code, name) " +
                 "VALUES (?, ?)");
@@ -51,7 +51,7 @@ public class Db {
         ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 actualCodes.add(resultSet.getString("Code"));
-                actualNames.add(resultSet.getString("name"));
+                actualNames.add(resultSet.getString("Name"));
             }
         }
 
