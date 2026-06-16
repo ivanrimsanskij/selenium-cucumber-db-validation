@@ -89,18 +89,19 @@ Opens the generated HTML report in your browser.
 
 ## Project structure
 
-
+```test
 src/test
 ├── java/org/prog/automation
-│   ├── AlloPage.java           # Page Object: allo.ua search + product scraping
-│   ├── Selenium.java           # Step defs: @Given request N iphones
-│   ├── Db.java                 # Step defs: @When store / @Then verify in DB
-│   ├── Hooks.java              # @After: truncates the table
-│   ├── DataManager.java        # Shared state between steps
-│   └── CucumberRunnerTest.java # TestNG runner + @BeforeSuite/@AfterSuite (driver & DB setup)
+│   ├── AlloPage.java            -> Page Object: allo.ua search + product scraping
+│   ├── Selenium.java            -> Step defs: @Given request N iphones
+│   ├── Db.java                  -> Step defs: @When store / @Then verify in DB
+│   ├── Hooks.java               -> @After: truncates the table
+│   ├── DataManager.java         -> Shared state between steps
+│   └── CucumberRunnerTest.java  -> TestNG runner + suite setup (driver & DB)
 └── resources
     ├── features/automation.feature
     └── testng.xml
+```
 
 
 ## Notes
