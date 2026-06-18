@@ -11,8 +11,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.prog.automation.Selenium.connection;
-
 @Slf4j
 public class Db {
 
@@ -24,14 +22,15 @@ public class Db {
         log.info("Names count: " + (names != null ? names.size() : "null"));
         log.info("Codes count: " + (codes != null ? codes.size() : "null"));
 
-        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO iphones (Code, name) " +
-                "VALUES (?, ?)");
+        try (PreparedStatement preparedStatement = Selenium.getConnection().prepareStatement("INSERT INTO iphones (Code, name) " +
+                "VALUES (?, ?)")) {
 
-        for (int i = 0; i < codes.size(); i++) {
-            log.info("Writing to DB: Name = " + names.get(i) + ", Code = " + codes.get(i));
-            preparedStatement.setString(1, codes.get(i));
-            preparedStatement.setString(2, names.get(i));
-            preparedStatement.execute();
+            for (int i = 0; i < codes.size(); i++) {
+                log.info("Writing to DB: Name = " + names.get(i) + ", Code = " + codes.get(i));
+                preparedStatement.setString(1, codes.get(i));
+                preparedStatement.setString(2, names.get(i));
+                preparedStatement.execute();
+            }
         }
         log.info("All data successfully stored into DB");
     }
@@ -46,7 +45,7 @@ public class Db {
         List<String> actualCodes = new ArrayList<>();
         List<String> actualNames = new ArrayList<>();
 
-       try (PreparedStatement preparedStatement = connection.prepareStatement("Select Code, Name From iphones");
+       try (PreparedStatement preparedStatement = Selenium.getConnection().prepareStatement("Select Code, Name From iphones");
 
         ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {

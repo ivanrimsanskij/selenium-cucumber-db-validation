@@ -8,10 +8,6 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 
 import java.sql.DriverManager;
-
-import static org.prog.automation.Selenium.connection;
-import static org.prog.automation.Selenium.driver;
-
 @CucumberOptions(
         tags = "@dbHw",
         glue = "org.prog.automation",
@@ -20,7 +16,7 @@ import static org.prog.automation.Selenium.driver;
 
 public class CucumberRunnerTest extends AbstractTestNGCucumberTests {
     @BeforeSuite
-    private void beforeSuite() throws Exception {
+    public void beforeSuite() throws Exception {
         ChromeOptions options = new ChromeOptions();
 
         options.addArguments("--disable-notifications");
@@ -31,22 +27,23 @@ public class CucumberRunnerTest extends AbstractTestNGCucumberTests {
         options.addArguments("--disable-popup-blocking");
         options.addArguments("--window-size=1920,1080");
 
-        driver = new ChromeDriver(options);
-        Selenium.alloPage = new AlloPage(driver);
+        Selenium.setDriver(new ChromeDriver(options));
+        Selenium.setAlloPage(new AlloPage(Selenium.getDriver()));
 
         String url = "jdbc:mysql://localhost:3306/iphones";
         String user = System.getenv("Db_User");
         String password = System.getenv("Db_Password");
-        connection = DriverManager.getConnection(url, user, password);
+        Selenium.setConnection(DriverManager.getConnection(url, user, password));
     }
 
     @AfterSuite
     public void afterSuite() throws Exception {
-        if (connection != null) {
-            connection.close();
+        if (Selenium.getConnection() != null) {
+            Selenium.getConnection().close();
         }
-        if (driver != null) {
-            driver.quit();
+
+        if (Selenium.getDriver() != null) {
+            Selenium.getDriver().quit();
         }
     }
 }
