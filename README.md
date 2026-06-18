@@ -31,14 +31,14 @@ The single scenario:
 
 > The JDBC URL is currently hardcoded in
 > [`CucumberRunnerTest.java`](src/test/java/org/prog/automation/CucumberRunnerTest.java) as
-> jdbc:mysql://localhost:3306/iphones. Containerization is intentionally out of scope for this
+> `jdbc:mysql://localhost:3306/iphones`. Containerization is intentionally out of scope for this
 > project, so you must have a local MySQL instance. If your host/port/schema differ, edit that line.
 
 ## Database setup
 
 Create the schema and the table the test expects:
 
-
+```sql
 CREATE DATABASE IF NOT EXISTS iphones;
 USE iphones;
 
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS iphones (
     Code VARCHAR(255),
     Name VARCHAR(255)
 );
-
+```
 
 ## Configuration (credentials)
 
@@ -54,42 +54,44 @@ DB credentials are not stored in the repo — they are read from environment var
 
 | Variable | Description |
 |----------|-------------|
-| Db_User | MySQL username |
-| Db_Password | MySQL password |
+| `Db_User` | MySQL username |
+| `Db_Password` | MySQL password |
 
 Set them before running (note the exact capitalization):
 
-macOS / Linux
+**macOS / Linux**
 
+```bash
 export Db_User="root"
 export Db_Password="your_password"
+```
 
+**Windows (PowerShell)**
 
-Windows (PowerShell)
-
+```powershell
 $env:Db_User="root"
 $env:Db_Password="your_password"
-
+```
 
 ## Run the tests
 
-
+```bash
 mvn clean test
+```
 
-
-The suite runs the scenarios tagged @dbHw. Chrome runs headless, so no browser window opens.
+The suite runs the scenarios tagged `@dbHw`. Chrome runs headless, so no browser window opens.
 
 ## Allure report
 
-
+```bash
 mvn allure:serve
-
+```
 
 Opens the generated HTML report in your browser.
 
 ## Project structure
 
-```test
+```text
 src/test
 ├── java/org/prog/automation
 │   ├── AlloPage.java            -> Page Object: allo.ua search + product scraping
@@ -103,10 +105,9 @@ src/test
     └── testng.xml
 ```
 
-
 ## Notes
 
 - The test depends on the live allo.ua markup; if the site changes its layout, the
-  CSS/ID locators in AlloPage.java may need updating.
+  CSS/ID locators in `AlloPage.java` may need updating.
 - Built as a learning/portfolio project to demonstrate combining UI automation with
   database-level validation in a single BDD flow.
